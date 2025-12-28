@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ChefAI | Sign Up</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+body{background:#f5f5f5;display:flex;justify-content:center;align-items:center;height:100vh;}
+.container{background:#fff;padding:40px;border-radius:10px;box-shadow:0 5px 20px rgba(0,0,0,0.1);width:350px;}
+h2{text-align:center;margin-bottom:20px;color:  #0a4620;}
+input{width:100%;padding:10px;margin:10px 0;border:1px solid #ccc;border-radius:5px;}
+button{width:100%;padding:10px;background:#0a4620;color:#fff;border:none;border-radius:5px;cursor:pointer;font-size:16px;}
+button:hover{background:#064218;}
+.message{text-align:center;margin-top:10px;font-size:14px;}
+</style>
+</head>
+<body>
+<div class="container">
+    <h2>Sign Up</h2>
+    <input type="text" id="username" placeholder="Username">
+    <input type="email" id="email" placeholder="Email">
+    <input type="password" id="password" placeholder="Password">
+    <button id="signupBtn">Sign Up</button>
+    <div class="message" id="message"></div>
+</div>
+
+<script>
+document.getElementById("signupBtn").addEventListener("click", async () => {
+    const username = document.getElementById("username").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
+    const messageDiv = document.getElementById("message");
+
+    if (!username || !email || !password) {
+        messageDiv.style.color = "red";
+        messageDiv.innerText = "All fields are required!";
+        return;
+    }
+
+    try {
+        const response = await fetch("http://127.0.0.1:5000/signup", {
+
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username, email, password })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            messageDiv.style.color = "green";
+            messageDiv.innerText = "Signup successful! Redirecting...";
+
+            setTimeout(() => {
+                window.location.href = "/home";
+            }, 1200);
+        } else {
+            messageDiv.style.color = "red";
+            messageDiv.innerText = data.message || "Signup failed!";
+        }
+
+    } catch (error) {
+        console.error(error);
+        messageDiv.style.color = "red";
+        messageDiv.innerText = "Backend not reachable. Start Flask server.";
+    }
+});
+</script>
+
+
+</body>
+</html>

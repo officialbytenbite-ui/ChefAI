@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ChefAI | AI Chatbot</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+
+<!-- Bootstrap + Icons -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+
+<style>
+:root{
+    --primary-gradient: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+    --accent-mint:#a5efca;
+    --dark:#0f2027;
+    --gray:#6b7280;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+    font-family:'Inter',sans-serif;
+    background:var(--primary-gradient);
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+}
+.navbar {
+    background: rgba(15, 32, 39, 0.95);
+    backdrop-filter: blur(15px);
+    padding: 12px 0;
+}
+.nav-link-icon {
+    color: white;
+    font-size: 1.5rem;
+    margin: 0 12px;
+    text-decoration: none;
+    transition: 0.3s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.nav-link-icon:hover { color: var(--accent-mint); transform: translateY(-3px); }
+.nav-link-icon span { font-size: 0.65rem; opacity: 0; transition: 0.3s; margin-top: 2px; }
+.nav-link-icon:hover span { opacity: 1; }
+.navbar-logo {
+    height: 90px;
+}
+.navbar-center-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    color: white;
+}
+.main{
+    flex:1;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+.chat-container{
+    width:460px;
+    background:rgba(255,255,255,0.92);
+    border-radius:28px;
+    padding:28px;
+}
+.chat-header{text-align:center;}
+.chat-box{
+    height:240px;
+    background:white;
+    border-radius:18px;
+    padding:12px;
+    overflow-y:auto;
+    margin-bottom:14px;
+}
+.message{
+    padding:10px 14px;
+    border-radius:18px;
+    margin-bottom:8px;
+    max-width:80%;
+}
+.user{
+    background:#0f2027;
+    color:white;
+    margin-left:auto;
+}
+.bot{background:#e5e7eb;}
+input,select,button{
+    width:100%;
+    padding:12px;
+    border-radius:12px;
+    margin-bottom:10px;
+}
+button{
+    border:none;
+    background:#0f2027;
+    color:white;
+}
+.extra-inputs{
+    display:flex;
+    gap:10px;
+    margin-bottom:10px;
+}
+footer{
+    background:#0f2027;
+    color:#ccc;
+    padding:20px;
+    text-align:center;
+}
+</style>
+</head>
+
+<body>
+
+<nav class="navbar sticky-top">
+    <div class="container d-flex justify-content-between align-items-center">
+       <a href="/home" class="navbar-brand d-flex align-items-center">
+        <img src="{{ url_for('static', filename='images/cheflogo3.jpeg') }}" class="navbar-logo">
+       </a>
+       <div class="navbar-center-title">ChefAI</div>
+
+        <div class="d-flex">
+            <a href="/home" class="nav-link-icon"><i class="bi bi-house"></i><span>Home</span></a>
+            <a href="/aboutus" class="nav-link-icon"><i class="bi bi-info-circle"></i><span>About</span></a>
+            <a href="/recipie" class="nav-link-icon"><i class="bi bi-book"></i><span>Recipes</span></a>
+            <a href="/chatbot" class="nav-link-icon"><i class="bi bi-cpu"></i><span>AI</span></a>
+            <a href="/contactus" class="nav-link-icon"><i class="bi bi-chat-dots"></i><span>Contact</span></a>
+        </div>
+    </div>
+</nav>
+<div class="main">
+<div class="chat-container">
+
+<div class="chat-header">
+<h2>ChefAI Chatbot</h2>
+<p>Smart recipes from your ingredients</p>
+</div>
+
+<div class="chat-box" id="chatBox"></div>
+
+<label>Ingredients</label>
+<input id="ingredients" placeholder="rice, tomato, onion">
+
+<div class="extra-inputs">
+    <button onclick="startVoice()">🎤 Voice</button>
+</div>
+
+<label>Health Preference</label>
+<select id="health">
+<option value="">Select health preference</option>
+<option>Diabetic</option>
+<option>Gym / High Protein</option>
+<option>Weight Loss</option>
+</select>
+
+<label>Cuisine</label>
+<select id="cuisine">
+<option>Indian</option>
+<option>Chinese</option>
+<option>Italian</option>
+</select>
+
+<button onclick="send()">Generate Recipe</button>
+
+<!-- ✅ ONLY NEW ADDITION START -->
+<div style="display:flex; gap:10px; margin-top:12px;">
+    <button onclick="window.location.href='/review'">
+        ⭐ Reviews
+    </button>
+    <button onclick="window.location.href='/diet'">
+        🥗 Diet Planner
+    </button>
+</div>
+<!-- ✅ ONLY NEW ADDITION END -->
+
+</div>
+</div>
+
+<footer>© 2025 ChefAI</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/2.1.0/showdown.min.js"></script>
+
+<script>
+const chatBox = document.getElementById("chatBox");
+const converter = new showdown.Converter();
+
+async function send(){
+    const ingredients = document.getElementById("ingredients").value;
+    const health = document.getElementById("health").value;
+    const cuisine = document.getElementById("cuisine").value;
+
+    if(!ingredients) return;
+
+    chatBox.innerHTML += `<div class="message user">${ingredients}</div>`;
+
+    const loading = document.createElement("div");
+    loading.className = "message bot";
+    loading.innerText = "👨‍🍳 ChefAI is thinking...";
+    chatBox.appendChild(loading);
+
+    try{
+        const res = await fetch("http://127.0.0.1:5000/generate-recipe",{
+            method:"POST",
+            headers:{"Content-Type":"application/json"},
+            body:JSON.stringify({ingredients,health,cuisine})
+        });
+
+        const data = await res.json();
+        loading.remove();
+
+        if(data.recipe){
+            chatBox.innerHTML += `<div class="message bot">${converter.makeHtml(data.recipe)}</div>`;
+        } else {
+            chatBox.innerHTML += `<div class="message bot">❌ ${data.error}</div>`;
+        }
+    }catch{
+        loading.innerText="❌ Server error";
+    }
+
+    document.getElementById("ingredients").value="";
+}
+
+function startVoice(){
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if(!SpeechRecognition){
+        alert("Voice input not supported");
+        return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.lang = "en-US";
+    recognition.start();
+
+    recognition.onresult = e => {
+        document.getElementById("ingredients").value = e.results[0][0].transcript;
+    };
+}
+</script>
+
+</body>
+</html>

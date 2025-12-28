@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ChefAI | Premium Icon Vault</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Playfair+Display:wght@700&display=swap"
+        rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            --accent-mint: #a5efca;
+            --card-bg: rgba(255, 255, 255, 0.98);
+            --text-dark: #1a1a1a;
+        }
+
+        body {
+            background: var(--primary-gradient);
+            background-attachment: fixed;
+            font-family: 'Outfit', sans-serif;
+            color: white;
+        }
+
+        h1,
+        h2 {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* ---------- SYMBOL NAVBAR ---------- */
+        .navbar {
+            background: rgba(15, 32, 39, 0.95);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px 0;
+        }
+
+        .nav-link-icon {
+            color: white;
+            font-size: 1.5rem;
+            margin: 0 12px;
+            text-decoration: none;
+            transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .nav-link-icon:hover {
+            color: var(--accent-mint);
+            transform: translateY(-3px);
+        }
+
+        .nav-link-icon span {
+            font-size: 0.65rem;
+            opacity: 0;
+            transition: 0.3s;
+            text-transform: uppercase;
+            margin-top: 2px;
+        }
+
+        .nav-link-icon:hover span {
+            opacity: 1;
+        }
+
+        /* ---------- LOGO ---------- */
+        .navbar-logo {
+            height: 100px;
+            width: fit-content;
+            transition: 0.3s ease;
+        }
+
+        .navbar-logo:hover {
+            transform: scale(1.05);
+        }
+
+        /* ---------- CENTER BRAND TEXT ---------- */
+        .navbar-center-title {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: white;
+            pointer-events: none;
+            /* prevents blocking clicks */
+        }
+
+
+        /* ---------- SEARCH & FILTERS ---------- */
+        .search-input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            padding: 15px 25px;
+            color: white;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .filter-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 50px;
+            margin: 5px;
+            transition: 0.4s;
+        }
+
+        .filter-btn.active {
+            background: var(--accent-mint);
+            color: var(--text-dark);
+        }
+
+        /* ---------- CARDS ---------- */
+        .recipe-card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: 0.4s ease;
+            height: 100%;
+            color: var(--text-dark);
+        }
+
+        .receipe-title{
+            text-align: center;
+            font-size: 24px;
+        }
+
+        .recipe-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .img-box {
+            height: 200px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: 0.5s;
+        }
+
+        .recipe-card:hover img {
+            transform: scale(1.1);
+        }
+
+        .cuisine-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: rgba(0, 0, 0, 0.7);
+            color: var(--accent-mint);
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .view-btn {
+            /* background: var(--primary-gradient); */
+            color: white;
+            border: none;
+            padding: 10px;
+            /* border-radius: 12px; */
+            font-weight: 600;
+            margin: 8px;
+            float: right;
+        }
+
+        /* ================= FOOTER ================= */
+        footer {
+            background: #0f2027;
+            color: #ccc;
+            padding: 35px 0;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        /* ---------- MODAL ---------- */
+        .modal-content {
+            border-radius: 30px;
+            color: var(--text-dark);
+        }
+
+        .modal-header {
+            background: var(--accent-mint);
+            border-radius: 30px 30px 0 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar sticky-top">
+        <div class="container d-flex justify-content-between align-items-center">
+            <a href="home.html" class="navbar-brand d-flex align-items-center">
+                <img src="{{ url_for('static', filename='images/cheflogo3.jpeg') }}" class="navbar-logo">
+            </a>
+            <div class="navbar-center-title">
+                ChefAI
+            </div>
+
+            <div class="d-flex">
+                <a href="/home" class="nav-link-icon"><i class="bi bi-house"></i><span>Home</span></a>
+                <a href="/aboutus" class="nav-link-icon"><i class="bi bi-info-circle"></i><span>About</span></a>
+                <a href="/recipie" class="nav-link-icon"><i class="bi bi-book"></i><span>Recipes</span></a>
+                <a href="/chatbot" class="nav-link-icon"><i class="bi bi-cpu"></i><span>AI</span></a>
+                <a href="/contactus" class="nav-link-icon"><i class="bi bi-chat-dots"></i><span>Contact</span></a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="container py-5 text-center">
+        <h1 class="display-3 fw-bold mb-4" data-aos="fade-down">The Culinary Vault</h1>
+
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <input type="text" id="searchInput" class="search-input" placeholder="Search dish or ingredients..."
+                    onkeyup="searchRecipe()">
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-center flex-wrap mb-5" data-aos="fade-up">
+            <button class="filter-btn active" onclick="filterCuisine('All', this)">All</button>
+            <button class="filter-btn" onclick="filterCuisine('Indian', this)">Indian </button>
+            <button class="filter-btn" onclick="filterCuisine('Italian', this)">Italian </button>
+            <button class="filter-btn" onclick="filterCuisine('Chinese', this)">Chinese </button>
+            <button class="filter-btn" onclick="filterCuisine('Desserts', this)">Desserts </button>
+
+        </div>
+
+        <div class="row g-4 text-start" id="recipesGrid"></div>
+    </section>
+
+    <div class="modal fade" id="recipeModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content border-0">
+                <div class="modal-header p-4">
+                    <h3 class="modal-title fw-bold" id="modalTitle"></h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <h5 class="fw-bold text-success border-bottom pb-2">Ingredients</h5>
+                            <ul id="modalIngredients" class="ps-0 list-unstyled"></ul>
+                        </div>
+                        <div class="col-md-7">
+                            <h5 class="fw-bold text-primary border-bottom pb-2">Cooking Steps</h5>
+                            <ol id="modalSteps" class="ps-3"></ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        © 2025 ChefAI. Crafted with ❤️ & Intelligence.
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <script>
+
+        const recipes = [
+            // ================= INDIAN =================
+            {
+                name: "Paneer Butter Masala",
+                cuisine: "Indian",
+                img: "https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=500",
+                ing: ["Paneer cubes", "Butter", "Onion", "Tomato puree", "Ginger-garlic paste", "Fresh cream", "Cashews", "Garam masala", "Red chili powder", "Salt"],
+                steps: [
+                    "Soak cashews in warm water for 15 minutes and grind into a smooth paste.",
+                    "Heat butter in a pan and add whole spices if desired.",
+                    "Add chopped onions and sauté until golden brown.",
+                    "Add ginger-garlic paste and cook until raw smell disappears.",
+                    "Add tomato puree and cook till oil separates.",
+                    "Mix in cashew paste, red chili powder, garam masala, and salt.",
+                    "Add water to adjust gravy consistency and simmer for 5 minutes.",
+                    "Add paneer cubes and cook for another 5 minutes.",
+                    "Finish with fresh cream and butter. Serve hot with naan."
+                ]
+            },
+
+            {
+                name: "Veg Biryani",
+                cuisine: "Indian",
+                img: "https://product-assets.faasos.io/eatsure/production/veg-biryani-online.jpeg",
+                ing: ["Basmati rice", "Mixed vegetables", "Onions", "Yogurt", "Biryani masala", "Whole spices", "Mint leaves", "Coriander", "Ghee"],
+                steps: [
+                    "Wash and soak basmati rice for 30 minutes.",
+                    "Boil rice with whole spices until 70% cooked and drain.",
+                    "Heat oil and sauté sliced onions until golden brown.",
+                    "Add vegetables and cook for 5 minutes.",
+                    "Add yogurt, biryani masala, mint, coriander and salt.",
+                    "Layer rice over vegetable masala.",
+                    "Drizzle ghee and cover tightly.",
+                    "Cook on low flame (dum) for 15 minutes.",
+                    "Fluff gently and serve hot with raita."
+                ]
+            },
+
+            {
+                name: "Chole Bhature",
+                cuisine: "Indian",
+                img: "https://thumbs.dreamstime.com/b/amritsari-chole-bhature-vegan-indian-breakfast-heavenly-brunch-snack-where-serve-spicy-chickpea-curry-deep-fried-219474681.jpg",
+                ing: ["Chickpeas", "Onions", "Tomatoes", "Chole masala", "Flour", "Yogurt", "Baking soda", "Oil"],
+                steps: [
+                    "Soak chickpeas overnight and pressure cook until soft.",
+                    "Heat oil, sauté onions till golden.",
+                    "Add ginger-garlic paste and tomatoes.",
+                    "Add chole masala, salt and cooked chickpeas.",
+                    "Simmer for 20 minutes until thick gravy forms.",
+                    "Prepare dough with flour, yogurt, salt and rest for 2 hours.",
+                    "Roll dough into discs and deep fry until puffed.",
+                    "Serve hot chole with crispy bhature."
+                ]
+            },
+
+            {
+                name: "Dal Makhani",
+                cuisine: "Indian",
+                img: "https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=500",
+                ing: ["Black lentils", "Kidney beans", "Butter", "Cream", "Tomato puree", "Spices"],
+                steps: [
+                    "Soak lentils and kidney beans overnight.",
+                    "Pressure cook until completely soft.",
+                    "Heat butter and sauté ginger-garlic paste.",
+                    "Add tomato puree and cook till oil separates.",
+                    "Add cooked dal, salt and spices.",
+                    "Simmer on low heat for 40 minutes.",
+                    "Add cream and butter before serving.",
+                    "Serve hot with naan or rice."
+                ]
+            },
+
+            // ================= ITALIAN =================
+            {
+                name: "Truffle Pasta",
+                cuisine: "Italian",
+                img: "https://images.unsplash.com/photo-1473093226795-af9932fe5856?w=500",
+                ing: ["Pasta", "Truffle oil", "Garlic", "Parmesan cheese", "Olive oil", "Salt", "Pepper"],
+                steps: [
+                    "Boil pasta in salted water until al dente.",
+                    "Heat olive oil and sauté garlic lightly.",
+                    "Add cooked pasta and toss well.",
+                    "Drizzle truffle oil and mix gently.",
+                    "Season with salt and pepper.",
+                    "Garnish with parmesan cheese.",
+                    "Serve immediately while hot."
+                ]
+            },
+
+            {
+                name: "Margherita Pizza",
+                cuisine: "Italian",
+                img: "https://www.yumcurry.com/wp-content/uploads/2020/06/pizza-margherita-recipe.jpg",
+                ing: ["Pizza dough", "Tomato sauce", "Mozzarella", "Basil", "Olive oil"],
+                steps: [
+                    "Preheat oven to highest temperature.",
+                    "Roll pizza dough into a base.",
+                    "Spread tomato sauce evenly.",
+                    "Add mozzarella slices.",
+                    "Bake until crust is golden.",
+                    "Garnish with fresh basil and olive oil.",
+                    "Slice and serve hot."
+                ]
+            },
+
+            {
+                name: "Risotto Mushroom",
+                cuisine: "Italian",
+                img: "https://images.unsplash.com/photo-1476124369491-e7addf5db371?w=500",
+                ing: ["Arborio rice", "Mushrooms", "Vegetable broth", "Onion", "Butter", "Parmesan"],
+                steps: [
+                    "Heat butter and sauté onions.",
+                    "Add mushrooms and cook until soft.",
+                    "Add rice and toast for 2 minutes.",
+                    "Gradually add hot broth, stirring constantly.",
+                    "Cook until creamy consistency.",
+                    "Finish with parmesan cheese.",
+                    "Serve warm."
+                ]
+            },
+
+            {
+                name: "Bruschetta",
+                cuisine: "Italian",
+                img: "https://images.unsplash.com/photo-1572656631137-7935297eff55?w=500",
+                ing: ["Baguette", "Tomatoes", "Garlic", "Olive oil", "Basil"],
+                steps: [
+                    "Toast baguette slices.",
+                    "Mix chopped tomatoes, garlic, basil and olive oil.",
+                    "Top mixture on toasted bread.",
+                    "Serve fresh."
+                ]
+            },
+
+            // ================= CHINESE =================
+            {
+                name: "Gobi Manchurian",
+                cuisine: "Chinese",
+                img: "https://bitesofindiaevan.com/wp-content/uploads/2024/11/veg.jpg",
+                ing: ["Cauliflower", "Cornflour", "Soy sauce", "Garlic", "Chili sauce"],
+                steps: [
+                    "Coat cauliflower with batter and fry until crispy.",
+                    "Heat oil and sauté garlic.",
+                    "Add sauces and mix well.",
+                    "Toss fried cauliflower in sauce.",
+                    "Serve hot."
+                ]
+            },
+
+            {
+                name: "Schezwan Noodles",
+                cuisine: "Chinese",
+                img: "https://images.unsplash.com/photo-1585032226651-759b368d7246?w=500",
+                ing: ["Noodles", "Vegetables", "Schezwan sauce", "Soy sauce", "Garlic"],
+                steps: [
+                    "Boil noodles and drain.",
+                    "Stir fry garlic and vegetables.",
+                    "Add sauces and noodles.",
+                    "Toss on high heat.",
+                    "Serve hot."
+                ]
+            },
+
+            {
+                name: "Spring Rolls",
+                cuisine: "Chinese",
+                img: "https://d1mxd7n691o8sz.cloudfront.net/static/recipe/recipe/2023-12/Vegetable-Spring-Rolls-2-1-906001560ca545c8bc72baf473f230b4_thumbnail_170.jpeg",
+                ing: ["Spring roll sheets", "Vegetables", "Soy sauce", "Oil"],
+                steps: [
+                    "Prepare vegetable filling.",
+                    "Fill and roll sheets tightly.",
+                    "Deep fry until golden.",
+                    "Serve with sauce."
+                ]
+            },
+
+            {
+                name: "Veg Dim Sums",
+                cuisine: "Chinese",
+                img: "https://images.unsplash.com/photo-1496116218417-1a781b1c416c?w=500",
+                ing: ["Flour", "Vegetables", "Garlic", "Soy sauce"],
+                steps: [
+                    "Prepare dough and filling.",
+                    "Stuff dumplings.",
+                    "Steam for 10 minutes.",
+                    "Serve hot."
+                ]
+            },
+
+            // ================= DESSERTS =================
+            {
+                name: "Blueberry Cheese Cake",
+                cuisine: "Desserts",
+                img: "https://www.thereciperebel.com/wp-content/uploads/2020/03/blueberry-cheesecake-www.thereciperebel.com-600-23-of-45.jpg",
+                ing: ["Cream cheese", "Blueberries", "Sugar", "Biscuits", "Butter"],
+                steps: [
+                    "Prepare biscuit base and chill.",
+                    "Beat cream cheese with sugar.",
+                    "Pour mixture over base.",
+                    "Bake and cool completely.",
+                    "Top with blueberry compote."
+                ]
+            },
+
+            {
+                name: "Caramel Pudding",
+                cuisine: "Desserts",
+                img: "https://www.yummytummyaarthi.com/wp-content/uploads/2023/05/caramel-bread-pudding-1.jpeg",
+                ing: ["Milk", "Sugar", "Eggs", "Vanilla"],
+                steps: [
+                    "Prepare caramel and pour into mold.",
+                    "Mix milk, eggs and sugar.",
+                    "Pour mixture over caramel.",
+                    "Steam or bake until set.",
+                    "Cool and unmold."
+                ]
+            },
+
+            {
+                name: "Brownie",
+                cuisine: "Desserts",
+                img: "https://www.kingarthurbaking.com/sites/default/files/styles/featured_image/public/recipe_legacy/1228-3-large.jpg?itok=ADPr9QfO",
+                ing: ["Dark chocolate", "Butter", "Flour", "Sugar", "Eggs"],
+                steps: [
+                    "Melt chocolate and butter.",
+                    "Mix sugar and eggs.",
+                    "Combine all ingredients.",
+                    "Bake until fudgy.",
+                    "Cool and cut."
+                ]
+            },
+
+            {
+                name: "Rasmalai",
+                cuisine: "Desserts",
+                img: "https://eatsbyramya.com/wp-content/uploads/2024/10/rasmalai_can_recipe.jpg",
+                ing: ["Milk", "Paneer balls", "Sugar", "Cardamom", "Saffron"],
+                steps: [
+                    "Prepare soft paneer balls.",
+                    "Boil in sugar syrup.",
+                    "Prepare thick flavored milk.",
+                    "Soak balls in milk.",
+                    "Chill and serve."
+                ]
+            }
+        ];
+
+
+
+        let currentFilter = 'All';
+
+        function displayRecipes(list) {
+            const grid = document.getElementById('recipesGrid');
+            grid.innerHTML = '';
+            list.forEach((r) => {
+                const item = document.createElement('div');
+                item.className = 'col-xl-3 col-lg-4 col-sm-6';
+                item.setAttribute('data-aos', 'fade-up');
+                item.innerHTML = `
+            <div class="recipe-card shadow-sm">
+                <div class="img-box"><span class="cuisine-badge">${r.cuisine}</span><img src="${r.img}" alt="${r.name}"></div>
+                <div class="card-body">
+                    <div class="receipe-title text-bg-light mb-3">${r.name}</div>
+                    <button class="view-btn btn btn-primary" onclick="showModal(${recipes.indexOf(r)})">View Details</button>
+                </div>
+            </div>
+        `;
+                grid.appendChild(item);
+            });
+        }
+
+        function filterCuisine(cuisine, btn) {
+            currentFilter = cuisine;
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            searchRecipe();
+        }
+
+        function searchRecipe() {
+            const term = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = recipes.filter(r => {
+                const matchesC = currentFilter === 'All' || r.cuisine === currentFilter;
+                const matchesS = r.name.toLowerCase().includes(term);
+                return matchesC && matchesS;
+            });
+            displayRecipes(filtered);
+        }
+
+        const modal = new bootstrap.Modal(document.getElementById('recipeModal'));
+        function showModal(idx) {
+            const r = recipes[idx];
+            document.getElementById('modalTitle').innerText = r.name;
+            document.getElementById('modalIngredients').innerHTML = r.ing.map(i => `<li class="border-bottom py-1">✔ ${i}</li>`).join('');
+            document.getElementById('modalSteps').innerHTML = r.steps.map(s => `<li class="mb-2">${s}</li>`).join('');
+            modal.show();
+        }
+
+        AOS.init({ once: true });
+        displayRecipes(recipes);
+    </script>
+
+</body>
+
+</html>
