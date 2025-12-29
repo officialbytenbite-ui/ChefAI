@@ -30,7 +30,7 @@ last_request_time = 0
 def chatbot():
     return render_template("chatbot.html")
 
-@app.route("/home")
+@app.route("/")
 def home():
      return render_template("home.html")
 
