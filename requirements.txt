@@ -4,3 +4,4 @@ flask-mysqldb
 werkzeug
 google-generativeai
 gunicorn
+mysqlclient
