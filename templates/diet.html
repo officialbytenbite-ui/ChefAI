@@ -175,7 +175,7 @@ footer{
 <!-- ================= JS (LOGIC UNCHANGED) ================= -->
 <script>
 function generateDiet() {
-    fetch("http://127.0.0.1:5000/diet-plan", {
+    fetch("/diet-plan", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
