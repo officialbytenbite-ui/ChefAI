@@ -29,7 +29,7 @@ button:hover{background:#064218;}
 </div>
 
 <script>
-document.getElementById("signupBtn").addEventListener("click", async () => {
+document.getElementById("signupBtn").addEventListener("click", function () {
     const username = document.getElementById("username").value.trim();
     const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value.trim();
@@ -37,46 +37,24 @@ document.getElementById("signupBtn").addEventListener("click", async () => {
 
     if (!username || !email || !password) {
         messageDiv.style.color = "red";
-        messageDiv.innerText = "All fields are required!";
+        messageDiv.innerText = "Please fill all fields!";
         return;
     }
-try {
-    const response = await fetch("/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, email, password })
-    });
 
-    let data;
-    const contentType = response.headers.get("content-type");
+    // 🔒 Optional: save data locally (fake signup)
+    localStorage.setItem("chefai_user", JSON.stringify({
+        username: username,
+        email: email
+    }));
 
-    if (contentType && contentType.includes("application/json")) {
-        data = await response.json();
-    } else {
-        const text = await response.text();
-        console.error("SERVER HTML ERROR ↓↓↓");
-        console.error(text);
-        throw new Error("Server returned HTML");
-    }
+    messageDiv.style.color = "green";
+    messageDiv.innerText = "Signup successful! Redirecting to home...";
 
-    if (response.ok) {
-        messageDiv.style.color = "green";
-        messageDiv.innerText = "Signup successful!";
-        setTimeout(() => window.location.href = "/home", 1200);
-    } else {
-        messageDiv.style.color = "red";
-        messageDiv.innerText = data.message || "Signup failed!";
-    }
-
-} catch (err) {
-    console.error("FETCH ERROR:", err);
-    messageDiv.style.color = "red";
-    messageDiv.innerText = "Server error. Check console.";
-}
-
+    setTimeout(() => {
+        window.location.href = "home.html"; // 👈 YOUR HOME PAGE
+    }, 1000);
 });
 </script>
-
 
 
 </body>
