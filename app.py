@@ -88,6 +88,8 @@ def generate_recipe():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     
+    #signup
+    
 @app.route('/signup', methods=['POST'])
 def signup():
     try:
@@ -127,6 +129,28 @@ def signup():
     except Exception as e:
         print("SIGNUP ERROR:", e)
         return jsonify({"message": "Server error", "error": str(e)}), 500
+    
+
+@app.route("/contact" methods=["POST"])
+def contact():
+    try:
+        data = request.get_json()
+
+        name = data.get("name")
+        email = data.get("email")
+        subject = data.get("subject")
+        message = data.get("message")
+
+        print("CONTACT MESSAGE:", name, email, subject, message)
+
+        return jsonify({
+            "success": True,
+            "message": "Message received"
+        }), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 
 
 
