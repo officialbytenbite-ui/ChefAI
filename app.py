@@ -32,6 +32,11 @@ last_request_time = 0
 # ---------------- Routes ----------------
 
 # Serve chatbot page
+
+@app.route("/")
+def signup():
+    return render_template("signup.html")
+
 @app.route("/chatbot")
 def chatbot():
     return render_template("chatbot.html")
