@@ -88,41 +88,46 @@ def generate_recipe():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     
-
 @app.route('/signup', methods=['POST'])
 def signup():
-    data = request.get_json()
+    try:
+        data = request.get_json()
 
-    if not data:
-        return jsonify({"message": "Invalid JSON"}), 400
+        if not data:
+            return jsonify({"message": "Invalid JSON"}), 400
 
-    email = data.get('email')
-    username = data.get('username')
-    password = data.get('password')
+        email = data.get('email')
+        username = data.get('username')
+        password = data.get('password')
 
-    if not email or not username or not password:
-        return jsonify({"message": "Missing fields"}), 400
+        if not email or not username or not password:
+            return jsonify({"message": "Missing fields"}), 400
 
-    cur = mysql.connection.cursor()
+        cur = mysql.connection.cursor()
 
-    cur.execute(
-        "SELECT * FROM user_info WHERE username=%s OR email=%s",
-        (username, email)
-    )
-    existing_user = cur.fetchone()
+        cur.execute(
+            "SELECT id FROM user_info WHERE username=%s OR email=%s",
+            (username, email)
+        )
 
-    if existing_user:
+        if cur.fetchone():
+            cur.close()
+            return jsonify({"message": "User already exists"}), 409
+
+        cur.execute(
+            "INSERT INTO user_info (email, username, password) VALUES (%s,%s,%s)",
+            (email, username, password)
+        )
+
+        mysql.connection.commit()
         cur.close()
-        return jsonify({"message": "User already exists"}), 409
 
-    cur.execute(
-        "INSERT INTO user_info (email, username, password) VALUES (%s,%s,%s)",
-        (email, username, password)
-    )
-    mysql.connection.commit()
-    cur.close()
+        return jsonify({"message": "Signup successful"}), 201
 
-    return jsonify({"message": "Signup successful"}), 201
+    except Exception as e:
+        print("SIGNUP ERROR:", e)
+        return jsonify({"message": "Server error", "error": str(e)}), 500
+
 
 
 # User login
