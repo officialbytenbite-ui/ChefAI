@@ -32,7 +32,7 @@ last_request_time = 0
 # ---------------- Routes ----------------
 
 # Serve chatbot page
-@app.route("/")
+@app.route("/index")
 def index():
     return render_template("index.html")
 
@@ -40,7 +40,7 @@ def index():
 def chatbot():
     return render_template("chatbot.html")
 
-@app.route("/home")
+@app.route("/")
 def home():
      return render_template("home.html")
 
