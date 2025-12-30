@@ -159,7 +159,9 @@ footer{
             </div>
         </div>
 
-        <button class="btn btn-generate mt-4 w-100" onclick="generateDiet()">
+        <button type="button" onclick="generateDiet()">Generate Diet Plan</button>
+
+
             Generate Diet Plan
         </button>
     </div>
@@ -177,7 +179,9 @@ footer{
 function generateDiet() {
     fetch("/diet-plan", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+            "Content-Type": "application/json"
+        },
         body: JSON.stringify({
             calories: document.getElementById("calories").value,
             budget: document.getElementById("budget").value,
@@ -186,7 +190,12 @@ function generateDiet() {
             planType: document.getElementById("planType").value
         })
     })
-    .then(res => res.json())
+    .then(res => {
+        if (!res.ok) {
+            throw new Error("Server error " + res.status);
+        }
+        return res.json();
+    })
     .then(data => {
         document.getElementById("result").innerHTML = `
             <div class="diet-card">
@@ -195,11 +204,12 @@ function generateDiet() {
         `;
     })
     .catch(err => {
-        document.getElementById("result").innerText = "Error generating plan";
         console.error(err);
+        document.getElementById("result").innerText = "Error generating plan";
     });
 }
 </script>
+
 
 </body>
 </html>
