@@ -26,34 +26,8 @@ button:hover{background:#064218;}
     <div class="message" id="message"></div>
 </div>
 
-<script>
-document.getElementById("signupBtn").addEventListener("click", () => {
-    const username = document.getElementById("username").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value.trim();
-    const messageDiv = document.getElementById("message");
 
-    if (!username || !email || !password) {
-        messageDiv.style.color = "red";
-        messageDiv.innerText = "All fields are required!";
-        return;
-    }
-
-    // 🔥 JUGAAD: fake signup success
-    messageDiv.style.color = "green";
-    messageDiv.innerText = "Signup successful! Redirecting...";
-
-    // Optional: save data locally (fake)
-    localStorage.setItem("chefai_user", JSON.stringify({
-        username,
-        email
-    }));
-
-    setTimeout(() => {
-        window.location.href = "home.html"; // or login.html
-    }, 1200);
-});
-</script>
+<script> document.getElementById("signupBtn").addEventListener("click", async () => { const username = document.getElementById("username").value.trim(); const email = document.getElementById("email").value.trim(); const password = document.getElementById("password").value.trim(); const messageDiv = document.getElementById("message"); if (!username || !email || !password) { messageDiv.style.color = "red"; messageDiv.innerText = "All fields are required!"; return; } try { const res = await fetch("https://chefai-ocoj.onrender.com/signup", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ username, email, password }) }); const data = await response.json(); if (response.ok) { messageDiv.style.color = "green"; messageDiv.innerText = "Signup successful! Redirecting..."; setTimeout(() => { window.location.href = "/home"; }, 1200); } else { messageDiv.style.color = "red"; messageDiv.innerText = data.message || "Signup failed!"; } } catch (error) { console.error(error); messageDiv.style.color = "red"; messageDiv.innerText = "Backend not reachable. Start Flask server."; } }); </script>
 
 
 

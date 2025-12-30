@@ -190,10 +190,6 @@ def get_reviews(recipe):
     })
 
 
-# User signup
-@app.route('/register')
-def register():
-    return render_template('signup.html')
 
 # User signup
 @app.route('/signup', methods=['POST'])
