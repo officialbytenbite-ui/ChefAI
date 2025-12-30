@@ -202,7 +202,6 @@ let currentRating = 0;
 function rate(value) {
     currentRating = value;
     document.getElementById("ratingText").innerText = "Rating: " + value;
-
     document.querySelectorAll(".stars span").forEach((star, index) => {
         star.classList.toggle("active", index < value);
     });
@@ -216,7 +215,7 @@ function submitReview() {
         return;
     }
 
-    fetch("http://127.0.0.1:5000/submit-review", {
+    fetch("/submit-review", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -232,11 +231,12 @@ function submitReview() {
         currentRating = 0;
         document.querySelectorAll(".stars span").forEach(s => s.classList.remove("active"));
         loadReviews();
-    });
+    })
+    .catch(err => console.error(err));
 }
 
 function loadReviews() {
-    fetch("http://127.0.0.1:5000/get-reviews/Sample Recipe")
+    fetch(`/get-reviews/${encodeURIComponent("Sample Recipe")}`)
         .then(res => res.json())
         .then(data => {
             document.getElementById("avgRating").innerText =
@@ -252,11 +252,13 @@ function loadReviews() {
                     </div>
                 `;
             });
-        });
+        })
+        .catch(err => console.error(err));
 }
 
 loadReviews();
 </script>
+
 
 </body>
 </html>
