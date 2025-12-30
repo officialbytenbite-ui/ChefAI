@@ -131,7 +131,7 @@ def signup():
         return jsonify({"message": "Server error", "error": str(e)}), 500
     
 
-@app.route("/contact" methods=["POST"])
+@app.route("/contact",methods=["POST"])
 def contact():
     try:
         data = request.get_json()
