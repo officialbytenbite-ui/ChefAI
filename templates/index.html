@@ -27,7 +27,7 @@ button:hover{background:#064218;}
 </div>
 
 <script>
-document.getElementById("signupBtn").addEventListener("click", async () => {
+document.getElementById("signupBtn").addEventListener("click", () => {
     const username = document.getElementById("username").value.trim();
     const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value.trim();
@@ -39,35 +39,22 @@ document.getElementById("signupBtn").addEventListener("click", async () => {
         return;
     }
 
-    try {
-       const res = await fetch("https://chefai-ocoj.onrender.com/signup", {
+    // 🔥 JUGAAD: fake signup success
+    messageDiv.style.color = "green";
+    messageDiv.innerText = "Signup successful! Redirecting...";
 
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ username, email, password })
-        });
+    // Optional: save data locally (fake)
+    localStorage.setItem("chefai_user", JSON.stringify({
+        username,
+        email
+    }));
 
-        const data = await response.json();
-
-        if (response.ok) {
-            messageDiv.style.color = "green";
-            messageDiv.innerText = "Signup successful! Redirecting...";
-
-            setTimeout(() => {
-                window.location.href = "/home";
-            }, 1200);
-        } else {
-            messageDiv.style.color = "red";
-            messageDiv.innerText = data.message || "Signup failed!";
-        }
-
-    } catch (error) {
-        console.error(error);
-        messageDiv.style.color = "red";
-        messageDiv.innerText = "Backend not reachable. Start Flask server.";
-    }
+    setTimeout(() => {
+        window.location.href = "home.html"; // or login.html
+    }, 1200);
 });
 </script>
+
 
 
 </body>
