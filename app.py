@@ -31,10 +31,6 @@ last_request_time = 0
 
 # ---------------- Routes ----------------
 
-# Serve chatbot page
-@app.route("/index")
-def index():
-    return render_template("index.html")
 
 @app.route("/chatbot")
 def chatbot():
