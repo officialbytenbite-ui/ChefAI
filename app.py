@@ -135,7 +135,7 @@ def diet_plan():
     try:
         response = model.generate_content(
             prompt,
-            generation_config={"max_output_tokens": 5000}
+            generation_config={"max_output_tokens": 7000}
         )
         return jsonify({"plan": response.text})
 
