@@ -89,17 +89,22 @@ def generate_recipe():
         return jsonify({"error": str(e)}), 500
     
 
-# User signup
 @app.route('/signup', methods=['POST'])
 def signup():
-    data = request.json
-    # full_name = data['full_name']
-    email = data['email']
-    username = data['username']
-    password = data['password']
+    data = request.get_json()
+
+    if not data:
+        return jsonify({"message": "Invalid JSON"}), 400
+
+    email = data.get('email')
+    username = data.get('username')
+    password = data.get('password')
+
+    if not email or not username or not password:
+        return jsonify({"message": "Missing fields"}), 400
 
     cur = mysql.connection.cursor()
-    # Check if user already exists
+
     cur.execute(
         "SELECT * FROM user_info WHERE username=%s OR email=%s",
         (username, email)
@@ -110,27 +115,15 @@ def signup():
         cur.close()
         return jsonify({"message": "User already exists"}), 409
 
-    # Insert new user
     cur.execute(
         "INSERT INTO user_info (email, username, password) VALUES (%s,%s,%s)",
         (email, username, password)
     )
     mysql.connection.commit()
     cur.close()
+
     return jsonify({"message": "Signup successful"}), 201
 
-# Contact form submission
-@app.route("/contact", methods=["POST"])
-def contact():
-    data = request.json
-    cursor = mysql.connection.cursor()
-    cursor.execute(
-        "INSERT INTO contact_messages (name, email, subject, message) VALUES (%s, %s, %s, %s)",
-        (data["name"], data["email"], data["subject"], data["message"])
-    )
-    mysql.connection.commit()
-    cursor.close()
-    return jsonify({"status": "saved"}), 201
 
 # User login
 @app.route('/login', methods=['POST'])
