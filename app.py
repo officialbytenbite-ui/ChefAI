@@ -191,35 +191,6 @@ def get_reviews(recipe):
 
 
 
-# User signup
-@app.route('/signup', methods=['POST'])
-def signup():
-    data = request.json
-    # full_name = data['full_name']
-    email = data['email']
-    username = data['username']
-    password = data['password']
-
-    cur = mysql.connection.cursor()
-    # Check if user already exists
-    cur.execute(
-        "SELECT * FROM user_info WHERE username=%s OR email=%s",
-        (username, email)
-    )
-    existing_user = cur.fetchone()
-
-    if existing_user:
-        cur.close()
-        return jsonify({"message": "User already exists"}), 409
-
-    # Insert new user
-    cur.execute(
-        "INSERT INTO user_info (email, username, password) VALUES (%s,%s,%s)",
-        (email, username, password)
-    )
-    mysql.connection.commit()
-    cur.close()
-    return jsonify({"message": "Signup successful"}), 201
 
 # ---------------- Run App ----------------
 # if __name__ == "__main__":
