@@ -1,181 +1,264 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <title>ChefAI | Recipe Review</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Fonts -->
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:wght@700&display=swap"
-        rel="stylesheet"> <!-- Bootstrap + Icons -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
-    <style>
-        :root {
-            --accent-mint: #a5efca;
-            --dark-bg: #0f2027;
-        }
+<meta charset="UTF-8">
+<title>ChefAI | Recipe Review</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background-image: url("chefbg2.jpg");
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            background-size: cover;
-        }
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
 
-        h1,
-        h2,
-        h3 {
-            font-family: 'Playfair Display', serif;
-        }
+<!-- Bootstrap + Icons -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
 
-        /* ================= NAVBAR ================= */
-        .navbar {
-            background: rgba(15, 32, 39, 0.95);
-            backdrop-filter: blur(15px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 12px 0;
-        }
+<style>
+:root {
+    --accent-mint: #a5efca;
+    --dark-bg: #0f2027;
+}
 
-        .nav-link-icon {
-            color: white;
-            font-size: 1.5rem;
-            margin: 0 12px;
-            text-decoration: none;
-            transition: 0.3s;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+body{
+    font-family:'Inter',sans-serif;
+    background-image: url("chefbg2.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
 
-        .nav-link-icon:hover {
-            color: var(--accent-mint);
-            transform: translateY(-3px);
-        }
+h1,h2,h3{
+    font-family:'Playfair Display',serif;
+}
 
-        .nav-link-icon span {
-            font-size: 0.65rem;
-            opacity: 0;
-            transition: 0.3s;
-        }
+/* ================= NAVBAR ================= */
+.navbar {
+    background: rgba(15, 32, 39, 0.95);
+    backdrop-filter: blur(15px);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding: 12px 0;
+}
 
-        .nav-link-icon:hover span {
-            opacity: 1;
-        }
+.nav-link-icon {
+    color: white;
+    font-size: 1.5rem;
+    margin: 0 12px;
+    text-decoration: none;
+    transition: 0.3s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.nav-link-icon:hover {
+    color: var(--accent-mint);
+    transform: translateY(-3px);
+}
+.nav-link-icon span {
+    font-size: 0.65rem;
+    opacity: 0;
+    transition: 0.3s;
+}
+.nav-link-icon:hover span { opacity: 1; }
 
-        .navbar-logo {
-            height: 80px;
-        }
+.navbar-logo {
+    height: 80px;
+}
 
-        .navbar-center-title {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            font-family: 'Playfair Display', serif;
-            font-size: 1.8rem;
-            font-weight: 700;
-            letter-spacing: 2px;
-            color: white;
-        }
+.navbar-center-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: white;
+}
 
-        /* ================= REVIEW CARD ================= */
-        .review-card {
-            background: rgba(255, 255, 255, 0.97);
-            border-radius: 22px;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
-            padding: 35px;
-            max-width: 420px;
-            margin: auto;
-        }
+/* ================= REVIEW CARD ================= */
+.review-card{
+    background: rgba(255,255,255,0.97);
+    border-radius: 22px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+    padding: 35px;
+    max-width: 420px;
+    margin: auto;
+}
 
-        .stars {
-            text-align: center;
-        }
+.stars {
+    text-align: center;
+}
+.stars span {
+    font-size: 34px;
+    cursor: pointer;
+}
+.stars span.active {
+    color: gold;
+}
 
-        .stars span {
-            font-size: 34px;
-            cursor: pointer;
-        }
+textarea{
+    width:100%;
+    height:80px;
+    border-radius:8px;
+    padding:10px;
+    border:1px solid #ccc;
+}
 
-        .stars span.active {
-            color: gold;
-        }
+.btn-review{
+    background: var(--accent-mint);
+    border-radius: 50px;
+    font-weight: 600;
+    border: none;
+    padding: 12px;
+    transition: 0.3s;
+}
+.btn-review:hover{
+    background: white;
+    transform: translateY(-2px);
+}
 
-        textarea {
-            width: 100%;
-            height: 80px;
-            border-radius: 8px;
-            padding: 10px;
-            border: 1px solid #ccc;
-        }
+.review{
+    background: #f7f7f7;
+    border-radius: 10px;
+    padding: 8px 12px;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
 
-        .btn-review {
-            background: var(--accent-mint);
-            border-radius: 50px;
-            font-weight: 600;
-            border: none;
-            padding: 12px;
-            transition: 0.3s;
-        }
-
-        .btn-review:hover {
-            background: white;
-            transform: translateY(-2px);
-        }
-
-        .review {
-            background: #f7f7f7;
-            border-radius: 10px;
-            padding: 8px 12px;
-            margin-bottom: 8px;
-            font-size: 14px;
-        }
-
-        /* ================= FOOTER ================= */
-        footer {
-            background: #0f2027;
-            color: #ccc;
-            padding: 35px 0;
-            text-align: center;
-            font-size: 0.9rem;
-            margin-top: 80px;
-        }
-    </style>
+/* ================= FOOTER ================= */
+footer{
+    background:#0f2027;
+    color:#ccc;
+    padding:35px 0;
+    text-align:center;
+    font-size:0.9rem;
+    margin-top: 80px;
+}
+</style>
 </head>
 
-<body> <!-- ================= NAVBAR ================= -->
-    <nav class="navbar sticky-top">
-        <div class="container d-flex justify-content-between align-items-center"> <a href="/" class="navbar-brand"> <img
-                    src="{{ url_for('static', filename='images/cheflogo3.jpeg') }}" class="navbar-logo"> </a>
-            <div class="navbar-center-title">ChefAI</div>
-            <div class="d-flex"> <a href="/" class="nav-link-icon"><i class="bi bi-house"></i><span>Home</span></a> <a
-                    href="/aboutus" class="nav-link-icon"><i class="bi bi-info-circle"></i><span>About</span></a> <a
-                    href="/recipie" class="nav-link-icon"><i class="bi bi-book"></i><span>Recipes</span></a> <a
-                    href="/chatbot" class="nav-link-icon"><i class="bi bi-cpu"></i><span>AI</span></a> <a
-                    href="/contactus" class="nav-link-icon"><i class="bi bi-chat-dots"></i><span>Contact</span></a>
-            </div>
-        </div>
-    </nav> <!-- ================= REVIEW SECTION ================= -->
-    <div class="container mt-5">
-        <h2 class="text-center text-white mb-4">🍽️ Recipe Rating & Review</h2>
-        <div class="review-card">
-            <h3 class="text-center">Rate This Recipe</h3>
-            <div class="stars my-3"> <span onclick="rate(1)">⭐</span> <span onclick="rate(2)">⭐</span> <span
-                    onclick="rate(3)">⭐</span> <span onclick="rate(4)">⭐</span> <span onclick="rate(5)">⭐</span> </div>
-            <p id="ratingText" class="text-center fw-semibold">Rating: 0</p> <textarea id="comment"
-                placeholder="Write your review..."></textarea> <button class="btn btn-review w-100 mt-3"
-                onclick="submitReview()"> Submit Review </button>
-            <hr>
-            <h5 class="text-center">📊 AI Learning</h5>
-            <p id="avgRating" class="text-center">Average Rating: 0</p>
-            <h5 class="text-center">💬 Reviews</h5>
-            <div id="reviews"></div>
-        </div>
-    </div> <!-- ================= FOOTER ================= -->
-    <footer> © 2025 ChefAI. Crafted with ❤️ & Intelligence. </footer>
-    <!-- ================= SCRIPT (UNCHANGED LOGIC) ================= -->
-    <script> let currentRating = 0; function rate(value) { currentRating = value; document.getElementById("ratingText").innerText = "Rating: " + value; document.querySelectorAll(".stars span").forEach((star, index) => { star.classList.toggle("active", index < value); }); } function submitReview() { const comment = document.getElementById("comment").value.trim(); if (currentRating === 0) { alert("Please select a rating"); return; } fetch("/submit-review", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ recipe: "Sample Recipe", rating: currentRating, comment: comment }) }).then(res => res.json()).then(data => { alert("Review saved!"); document.getElementById("comment").value = ""; currentRating = 0; document.querySelectorAll(".stars span").forEach(s => s.classList.remove("active")); loadReviews(); }).catch(err => console.error(err)); } function loadReviews() { fetch(/get-reviews/${ encodeURIComponent("Sample Recipe") }).then(res => res.json()).then(data => { document.getElementById("avgRating").innerText = "Average Rating: " + data.average; const box = document.getElementById("reviews"); box.innerHTML = ""; data.comments.forEach((c, i) => { box.innerHTML += <div class="review"> ⭐ ${data.ratings[i]} <br>${c} </div>; }); }).catch(err => console.error(err)); } loadReviews(); </script>
-</body>
+<body>
 
+<!-- ================= NAVBAR ================= -->
+<nav class="navbar sticky-top">
+    <div class="container d-flex justify-content-between align-items-center">
+        <a href="/" class="navbar-brand">
+           <img src="{{ url_for('static', filename='images/cheflogo3.jpeg') }}" class="navbar-logo">
+        </a>
+
+        <div class="navbar-center-title">ChefAI</div>
+
+        <div class="d-flex">
+            <a href="/" class="nav-link-icon"><i class="bi bi-house"></i><span>Home</span></a>
+            <a href="/aboutus" class="nav-link-icon"><i class="bi bi-info-circle"></i><span>About</span></a>
+            <a href="/recipie" class="nav-link-icon"><i class="bi bi-book"></i><span>Recipes</span></a>
+            <a href="/chatbot" class="nav-link-icon"><i class="bi bi-cpu"></i><span>AI</span></a>
+            <a href="/contactus" class="nav-link-icon"><i class="bi bi-chat-dots"></i><span>Contact</span></a>
+        </div>
+    </div>
+</nav>
+
+<!-- ================= REVIEW SECTION ================= -->
+<div class="container mt-5">
+    <h2 class="text-center text-white mb-4">🍽️ Recipe Rating & Review</h2>
+
+    <div class="review-card">
+        <h3 class="text-center">Rate This Recipe</h3>
+
+        <div class="stars my-3">
+            <span onclick="rate(1)">⭐</span>
+            <span onclick="rate(2)">⭐</span>
+            <span onclick="rate(3)">⭐</span>
+            <span onclick="rate(4)">⭐</span>
+            <span onclick="rate(5)">⭐</span>
+        </div>
+
+        <p id="ratingText" class="text-center fw-semibold">Rating: 0</p>
+
+        <textarea id="comment" placeholder="Write your review..."></textarea>
+
+        <button class="btn btn-review w-100 mt-3" onclick="submitReview()">
+            Submit Review
+        </button>
+
+        <hr>
+
+        <h5 class="text-center">📊 AI Learning</h5>
+        <p id="avgRating" class="text-center">Average Rating: 0</p>
+
+        <h5 class="text-center">💬 Reviews</h5>
+        <div id="reviews"></div>
+    </div>
+</div>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+    © 2025 ChefAI. Crafted with ❤️ & Intelligence.
+</footer>
+
+<!-- ================= SCRIPT (UNCHANGED LOGIC) ================= -->
+<script>
+let currentRating = 0;
+
+function rate(value) {
+    currentRating = value;
+    document.getElementById("ratingText").innerText = "Rating: " + value;
+    document.querySelectorAll(".stars span").forEach((star, index) => {
+        star.classList.toggle("active", index < value);
+    });
+}
+
+function submitReview() {
+    const comment = document.getElementById("comment").value.trim();
+
+    if (currentRating === 0) {
+        alert("Please select a rating");
+        return;
+    }
+
+    fetch("/submit-review", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            recipe: "Sample Recipe",
+            rating: currentRating,
+            comment: comment
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        alert("Review saved!");
+        document.getElementById("comment").value = "";
+        currentRating = 0;
+        document.querySelectorAll(".stars span").forEach(s => s.classList.remove("active"));
+        loadReviews();
+    })
+    .catch(err => console.error(err));
+}
+
+function loadReviews() {
+    fetch(`/get-reviews/${encodeURIComponent("Sample Recipe")}`)
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById("avgRating").innerText =
+                "Average Rating: " + data.average;
+
+            const box = document.getElementById("reviews");
+            box.innerHTML = "";
+
+            data.comments.forEach((c, i) => {
+                box.innerHTML += `
+                    <div class="review">
+                        ⭐ ${data.ratings[i]} <br>${c}
+                    </div>
+                `;
+            });
+        })
+        .catch(err => console.error(err));
+}
+
+loadReviews();
+</script>
+
+
+</body>
 </html>
