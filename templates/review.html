@@ -187,6 +187,13 @@ footer{
 
         <h5 class="text-center">💬 Reviews</h5>
         <div id="reviews"></div>
+
+        <div id="reviewLoading"
+     class="text-center mt-3"
+     style="display:none; color:black; font-weight:600;">
+    ⏳ Submitting your review, please wait...
+</div>
+
     </div>
 </div>
 
@@ -215,6 +222,9 @@ function submitReview() {
         return;
     }
 
+    // 👉 SHOW loading message
+    document.getElementById("reviewLoading").style.display = "block";
+
     fetch("/submit-review", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -226,13 +236,24 @@ function submitReview() {
     })
     .then(res => res.json())
     .then(data => {
+
+        // 👉 HIDE loading message
+        document.getElementById("reviewLoading").style.display = "none";
+
         alert("Review saved!");
         document.getElementById("comment").value = "";
         currentRating = 0;
         document.querySelectorAll(".stars span").forEach(s => s.classList.remove("active"));
         loadReviews();
     })
-    .catch(err => console.error(err));
+    .catch(err => {
+        console.error(err);
+
+        // 👉 HIDE loading even on error
+        document.getElementById("reviewLoading").style.display = "none";
+
+        alert("Error submitting review");
+    });
 }
 
 function loadReviews() {
