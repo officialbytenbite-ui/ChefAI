@@ -178,14 +178,6 @@ footer{
 <!-- ================= JS (LOGIC UNCHANGED) ================= -->
 <script>
 function generateDiet() {
-
-    // ✅ SHOW LOADING MESSAGE
-    document.getElementById("result").innerHTML = `
-        <div class="diet-card text-center">
-            <strong>⏳ Generating diet plan...</strong>
-        </div>
-    `;
-
     fetch("/diet-plan", {
         method: "POST",
         headers: {
@@ -206,7 +198,6 @@ function generateDiet() {
         return res.json();
     })
     .then(data => {
-        // ✅ REMOVE LOADING + SHOW RESULT
         document.getElementById("result").innerHTML = `
             <div class="diet-card">
                 <pre>${data.plan}</pre>
@@ -215,16 +206,10 @@ function generateDiet() {
     })
     .catch(err => {
         console.error(err);
-        // ✅ REMOVE LOADING ON ERROR
-        document.getElementById("result").innerHTML = `
-            <div class="diet-card text-danger text-center">
-                ❌ Error generating plan
-            </div>
-        `;
+        document.getElementById("result").innerText = "Error generating plan";
     });
 }
 </script>
-
 
 
 </body>

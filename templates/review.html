@@ -215,13 +215,6 @@ function submitReview() {
         return;
     }
 
-    // ✅ SHOW SUBMITTING MESSAGE
-    document.getElementById("reviews").innerHTML = `
-        <div class="review text-center">
-            ⏳ Submitting review...
-        </div>
-    `;
-
     fetch("/submit-review", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -233,16 +226,13 @@ function submitReview() {
     })
     .then(res => res.json())
     .then(data => {
-        // ✅ MESSAGE DISAPPEARS (reviews reload)
+        alert("Review saved!");
         document.getElementById("comment").value = "";
         currentRating = 0;
         document.querySelectorAll(".stars span").forEach(s => s.classList.remove("active"));
         loadReviews();
     })
-    .catch(err => {
-        console.error(err);
-        document.getElementById("reviews").innerHTML = "";
-    });
+    .catch(err => console.error(err));
 }
 
 function loadReviews() {
@@ -268,7 +258,6 @@ function loadReviews() {
 
 loadReviews();
 </script>
-
 
 
 </body>
