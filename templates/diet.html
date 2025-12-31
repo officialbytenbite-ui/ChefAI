@@ -162,6 +162,10 @@ footer{
       <button type="button" class="btn-generate" onclick="generateDiet()">
   Generate Diet
 </button>
+<div id="loadingMsg" class="text-center text-white mt-4" style="display:none;">
+    ⏳ Generating your diet plan, please wait...
+</div>
+
 
 
       
@@ -178,6 +182,11 @@ footer{
 <!-- ================= JS (LOGIC UNCHANGED) ================= -->
 <script>
 function generateDiet() {
+
+    // 👉 SHOW loading message
+    document.getElementById("loadingMsg").style.display = "block";
+    document.getElementById("result").innerHTML = "";
+
     fetch("/diet-plan", {
         method: "POST",
         headers: {
@@ -198,6 +207,10 @@ function generateDiet() {
         return res.json();
     })
     .then(data => {
+
+        // 👉 HIDE loading message
+        document.getElementById("loadingMsg").style.display = "none";
+
         document.getElementById("result").innerHTML = `
             <div class="diet-card">
                 <pre>${data.plan}</pre>
@@ -206,10 +219,15 @@ function generateDiet() {
     })
     .catch(err => {
         console.error(err);
-        document.getElementById("result").innerText = "Error generating plan";
+
+        // 👉 HIDE loading message even on error
+        document.getElementById("loadingMsg").style.display = "none";
+
+        document.getElementById("result").innerText = "❌ Error generating plan";
     });
 }
 </script>
+
 
 
 </body>
